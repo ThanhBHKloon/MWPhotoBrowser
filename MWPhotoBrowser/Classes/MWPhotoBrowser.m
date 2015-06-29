@@ -252,37 +252,37 @@
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     NSMutableArray *items = [[NSMutableArray alloc] init];
 
-    // Left button - Grid
-    if (_enableGrid) {
-        hasItems = YES;
-//        NSString *buttonName = @"UIBarButtonItemGrid";
-//        if (SYSTEM_VERSION_LESS_THAN(@"7")) buttonName = @"UIBarButtonItemGridiOS6";
-        [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon_back.png"]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
-    } else {
-        [items addObject:fixedSpace];
-    }
-
-//    // Middle - Nav
-//    if (_previousButton && _nextButton && numberOfPhotos > 1) {
+//    // Left button - Grid
+//    if (_enableGrid) {
 //        hasItems = YES;
-//        [items addObject:flexSpace];
-//        [items addObject:_previousButton];
-//        [items addObject:flexSpace];
-//        [items addObject:_nextButton];
-//        [items addObject:flexSpace];
+////        NSString *buttonName = @"UIBarButtonItemGrid";
+////        if (SYSTEM_VERSION_LESS_THAN(@"7")) buttonName = @"UIBarButtonItemGridiOS6";
+//        [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon_back.png"]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
 //    } else {
-//        [items addObject:flexSpace];
-//    }
-//
-//    // Right - Action
-//    if (_actionButton && !(!hasItems && !self.navigationItem.rightBarButtonItem)) {
-//        [items addObject:_actionButton];
-//    } else {
-//        // We're not showing the toolbar so try and show in top right
-//        if (_actionButton)
-//            self.navigationItem.rightBarButtonItem = _actionButton;
 //        [items addObject:fixedSpace];
 //    }
+
+    // Middle - Nav
+    if (_previousButton && _nextButton && numberOfPhotos > 1) {
+        hasItems = YES;
+        [items addObject:flexSpace];
+        [items addObject:_previousButton];
+        [items addObject:flexSpace];
+        [items addObject:_nextButton];
+        [items addObject:flexSpace];
+    } else {
+        [items addObject:flexSpace];
+    }
+
+    // Right - Action
+    if (_actionButton && !(!hasItems && !self.navigationItem.rightBarButtonItem)) {
+        [items addObject:_actionButton];
+    } else {
+        // We're not showing the toolbar so try and show in top right
+        if (_actionButton)
+            self.navigationItem.rightBarButtonItem = _actionButton;
+        [items addObject:fixedSpace];
+    }
 
     // Toolbar visibility
     [_toolbar setItems:items];
