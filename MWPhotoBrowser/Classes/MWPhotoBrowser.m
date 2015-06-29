@@ -172,7 +172,7 @@
     }
     _toolbar.barStyle = UIBarStyleBlackTranslucent;
     _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    
+    _toolbar.backgroundColor = [UIColor grayColor];
     // Toolbar Items
     if (self.displayNavArrows) {
         NSString *arrowPathFormat;
@@ -207,7 +207,7 @@
     
     // Setup
     _performingLayout = YES;
-    NSUInteger numberOfPhotos = [self numberOfPhotos];
+//    NSUInteger numberOfPhotos = [self numberOfPhotos];
     
 	// Setup pages
     [_visiblePages removeAllObjects];
@@ -215,18 +215,18 @@
     
     // Navigation buttons
     if ([self.navigationController.viewControllers objectAtIndex:0] == self) {
-        // We're first on stack so show done button
-        _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)];
-        // Set appearance
-        if ([UIBarButtonItem respondsToSelector:@selector(appearance)]) {
-            [_doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-            [_doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-            [_doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-            [_doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-            [_doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
-            [_doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
-        }
-        self.navigationItem.rightBarButtonItem = _doneButton;
+//        // We're first on stack so show done button
+//        _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)];
+//        // Set appearance
+//        if ([UIBarButtonItem respondsToSelector:@selector(appearance)]) {
+//            [_doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//            [_doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+//            [_doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+//            [_doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+//            [_doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
+//            [_doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
+//        }
+//        self.navigationItem.rightBarButtonItem = _doneButton;
     } else {
         // We're not first so show back button
         UIViewController *previousViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
@@ -255,34 +255,34 @@
     // Left button - Grid
     if (_enableGrid) {
         hasItems = YES;
-        NSString *buttonName = @"UIBarButtonItemGrid";
-        if (SYSTEM_VERSION_LESS_THAN(@"7")) buttonName = @"UIBarButtonItemGridiOS6";
-        [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MWPhotoBrowser.bundle/images/%@.png", buttonName]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
+//        NSString *buttonName = @"UIBarButtonItemGrid";
+//        if (SYSTEM_VERSION_LESS_THAN(@"7")) buttonName = @"UIBarButtonItemGridiOS6";
+        [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon_back.png"]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
     } else {
         [items addObject:fixedSpace];
     }
 
-    // Middle - Nav
-    if (_previousButton && _nextButton && numberOfPhotos > 1) {
-        hasItems = YES;
-        [items addObject:flexSpace];
-        [items addObject:_previousButton];
-        [items addObject:flexSpace];
-        [items addObject:_nextButton];
-        [items addObject:flexSpace];
-    } else {
-        [items addObject:flexSpace];
-    }
-
-    // Right - Action
-    if (_actionButton && !(!hasItems && !self.navigationItem.rightBarButtonItem)) {
-        [items addObject:_actionButton];
-    } else {
-        // We're not showing the toolbar so try and show in top right
-        if (_actionButton)
-            self.navigationItem.rightBarButtonItem = _actionButton;
-        [items addObject:fixedSpace];
-    }
+//    // Middle - Nav
+//    if (_previousButton && _nextButton && numberOfPhotos > 1) {
+//        hasItems = YES;
+//        [items addObject:flexSpace];
+//        [items addObject:_previousButton];
+//        [items addObject:flexSpace];
+//        [items addObject:_nextButton];
+//        [items addObject:flexSpace];
+//    } else {
+//        [items addObject:flexSpace];
+//    }
+//
+//    // Right - Action
+//    if (_actionButton && !(!hasItems && !self.navigationItem.rightBarButtonItem)) {
+//        [items addObject:_actionButton];
+//    } else {
+//        // We're not showing the toolbar so try and show in top right
+//        if (_actionButton)
+//            self.navigationItem.rightBarButtonItem = _actionButton;
+//        [items addObject:fixedSpace];
+//    }
 
     // Toolbar visibility
     [_toolbar setItems:items];
@@ -444,7 +444,7 @@
 #pragma mark - Nav Bar Appearance
 
 - (void)setNavBarAppearance:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
     UINavigationBar *navBar = self.navigationController.navigationBar;
     navBar.tintColor = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7") ? [UIColor whiteColor] : nil;
     if ([navBar respondsToSelector:@selector(setBarTintColor:)]) {
@@ -909,29 +909,29 @@
     }
     
     // Release images further away than +/-1
-    NSUInteger i;
-    if (index > 0) {
-        // Release anything < index - 1
-        for (i = 0; i < index-1; i++) { 
-            id photo = [_photos objectAtIndex:i];
-            if (photo != [NSNull null]) {
-                [photo unloadUnderlyingImage];
-                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
-                MWLog(@"Released underlying image at index %lu", (unsigned long)i);
-            }
-        }
-    }
-    if (index < [self numberOfPhotos] - 1) {
-        // Release anything > index + 1
-        for (i = index + 2; i < _photos.count; i++) {
-            id photo = [_photos objectAtIndex:i];
-            if (photo != [NSNull null]) {
-                [photo unloadUnderlyingImage];
-                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
-                MWLog(@"Released underlying image at index %lu", (unsigned long)i);
-            }
-        }
-    }
+//    NSUInteger i;
+//    if (index > 0) {
+//        // Release anything < index - 1
+//        for (i = 0; i < index-1; i++) { 
+//            id photo = [_photos objectAtIndex:i];
+//            if (photo != [NSNull null]) {
+//                [photo unloadUnderlyingImage];
+//                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
+//                MWLog(@"Released underlying image at index %lu", (unsigned long)i);
+//            }
+//        }
+//    }
+//    if (index < [self numberOfPhotos] - 1) {
+//        // Release anything > index + 1
+//        for (i = index + 2; i < _photos.count; i++) {
+//            id photo = [_photos objectAtIndex:i];
+//            if (photo != [NSNull null]) {
+//                [photo unloadUnderlyingImage];
+//                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
+//                MWLog(@"Released underlying image at index %lu", (unsigned long)i);
+//            }
+//        }
+//    }
     
     // Load adjacent images if needed and the photo is already
     // loaded. Also called after photo has been loaded in background
@@ -1138,7 +1138,7 @@
 #pragma mark - Grid
 
 - (void)showGridAnimated {
-    [self showGrid:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)showGrid:(BOOL)animated {
@@ -1323,7 +1323,7 @@
         CGFloat alpha = hidden ? 0 : 1;
 
         // Nav bar slides up on it's own on iOS 7
-        [self.navigationController.navigationBar setAlpha:alpha];
+        [self.navigationController.navigationBar setAlpha:0];
         
         // Toolbar
         if (slideAndFade) {
@@ -1576,7 +1576,7 @@
 
 - (void)hideProgressHUD:(BOOL)animated {
     [self.progressHUD hide:animated];
-    self.navigationController.navigationBar.userInteractionEnabled = YES;
+    self.navigationController.navigationBar.userInteractionEnabled = NO;
 }
 
 - (void)showProgressHUDCompleteMessage:(NSString *)message {
@@ -1588,7 +1588,7 @@
     } else {
         [self.progressHUD hide:YES];
     }
-    self.navigationController.navigationBar.userInteractionEnabled = YES;
+    self.navigationController.navigationBar.userInteractionEnabled = NO;
 }
 
 #pragma mark - Actions
