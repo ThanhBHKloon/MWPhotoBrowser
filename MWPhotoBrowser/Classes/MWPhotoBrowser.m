@@ -207,7 +207,7 @@
     
     // Setup
     _performingLayout = YES;
-//    NSUInteger numberOfPhotos = [self numberOfPhotos];
+    NSUInteger numberOfPhotos = [self numberOfPhotos];
     
 	// Setup pages
     [_visiblePages removeAllObjects];
@@ -253,14 +253,14 @@
     NSMutableArray *items = [[NSMutableArray alloc] init];
 
 //    // Left button - Grid
-//    if (_enableGrid) {
-//        hasItems = YES;
-////        NSString *buttonName = @"UIBarButtonItemGrid";
-////        if (SYSTEM_VERSION_LESS_THAN(@"7")) buttonName = @"UIBarButtonItemGridiOS6";
-//        [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon_back.png"]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
-//    } else {
-//        [items addObject:fixedSpace];
-//    }
+    if (_enableGrid) {
+        hasItems = YES;
+//        NSString *buttonName = @"UIBarButtonItemGrid";
+//        if (SYSTEM_VERSION_LESS_THAN(@"7")) buttonName = @"UIBarButtonItemGridiOS6";
+        [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon_back.png"]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
+    } else {
+        [items addObject:fixedSpace];
+    }
 
     // Middle - Nav
     if (_previousButton && _nextButton && numberOfPhotos > 1) {
